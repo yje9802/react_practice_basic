@@ -2,51 +2,38 @@
 // import styles from "./App.module.css";
 import { useState, useEffect } from "react";
 
-function Search() {
-	const [keyword, setKeyword] = useState("");
-	const onChange = (event) => setKeyword(event.target.value);
-	// this will be rendered only when the keyword is changed
-	useEffect(() => {
-		if (keyword !== "" && keyword.length > 5) {
-			console.log("Search for", keyword);
-		}
-	}, [keyword]);
-
-	return (
-		<input
-			value={keyword}
-			type="text"
-			placeholder="Search here..."
-			onChange={onChange}
-		/>
-	);
-}
-
 function App() {
-	const [counter, setValue] = useState(0);
-	const [showing, setShowing] = useState(false);
-	const onClick = () => setValue((prev) => prev + 1);
-	const onShowClick = () => setShowing((prev) => !prev);
+	const [todo, setToDo] = useState("");
+	const [toDos, setToDos] = useState([]);
 
-	const iRunOnlyOnce = () => {
-		console.log("i run only once");
-	};
-	// iRunOnlyOnce will be rendered only once at the very beginning
-	useEffect(iRunOnlyOnce, []);
-
-	useEffect(() => {
-		if (showing === true) {
-			console.log("created");
-			return () => console.log("destroyed");
+	const onChange = (event) => setToDo(event.target.value);
+	const onSubmit = (event) => {
+		event.preventDefault();
+		if (todo === "") {
+			return;
 		}
-	}, [showing]);
+		setToDos((currArray) => [todo, ...currArray]);
+		setToDo("");
+	};
 
 	return (
 		<div>
-			<h1>{counter}</h1>
-			<button onClick={onClick}>Click Me</button>
-			<button onClick={onShowClick}>{showing ? "Hide" : "Show"}</button>
-			{showing ? <Search /> : null}
+			<h1>My ToDos ({toDos.length})</h1>
+			<form onSubmit={onSubmit}>
+				<input
+					value={todo}
+					onChange={onChange}
+					type="text"
+					placeholder="Write your to do..."
+				/>
+				<button>Add your ToDo</button>
+			</form>
+			<hr />
+			<ul>
+				{toDos.map((item, index) => (
+					<li key={index}>{item}</li>
+				))}
+			</ul>
 		</div>
 	);
 }
