@@ -1,11 +1,16 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { useState, useEffect } from "react";
 import Home from "./routes/Home";
+import Detail from "./routes/Detail";
 
 function App() {
 	return (
 		<Router>
-			<Route path="/" element={<Home />}></Route>
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/movie/:id" element={<Detail />} />
+			</Routes>
 		</Router>
 	);
 }
